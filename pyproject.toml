@@ -1,0 +1,7 @@
+[tool.poetry]
+name = "syncronizor"
+version = "0.1.0"
+description = "Syncronize source folder with target folder"
+authors = ["simon.prochazka"]
+readme = "README.md"
+packages = [{include = "syncronize", from="src"}]
