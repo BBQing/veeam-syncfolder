@@ -5,3 +5,15 @@ description = "Syncronize source folder with target folder"
 authors = ["simon.prochazka"]
 readme = "README.md"
 packages = [{include = "syncronize", from="src"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+pylint = "^3.2.1"
+mypy = "^1.10.0"
+isort = "^5.13.2"
+

@@ -1,6 +1,6 @@
-from syncronize.config import config
+"This module enable runnign this application as python module"
 from syncronize.synchronize import Syncronizer
 
-sync = Syncronizer(config)
+sync = Syncronizer()
 
 sync.syncronize()

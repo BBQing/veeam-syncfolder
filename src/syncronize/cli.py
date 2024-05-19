@@ -1,3 +1,4 @@
+"Implementation of simple command line interface"
 import argparse
 
 parser = argparse.ArgumentParser()

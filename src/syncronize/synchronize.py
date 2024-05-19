@@ -1,19 +1,16 @@
-import pathlib
-from syncronize.config import config, Configuration
-from stat import S_ISDIR, S_ISREG
-import logging
 import hashlib
+import logging
+import pathlib
 import shutil
+from stat import S_ISDIR, S_ISREG
+
+from syncronize.config import config
 
 
 class Syncronizer:
 
-    def __init__(self, configuration: Configuration):
-        self.config = configuration
-        self.logger = None
-        self.setup_logging()
+    def __init__(self):
 
-    def setup_logging(self):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.addHandler(logging.StreamHandler())
         self.logger.addHandler(logging.FileHandler(filename=config.logfile))
@@ -25,8 +22,8 @@ class Syncronizer:
             return hashlib.file_digest(file, hashlib.md5)
 
     def syncronize(self):
-        current_source = pathlib.Path(self.config.source_dir)
-        current_target = pathlib.Path(self.config.target_dir)
+        current_source = pathlib.Path(config.source_dir)
+        current_target = pathlib.Path(config.target_dir)
 
         self.walksource(current_source, current_target)
 
@@ -67,28 +64,26 @@ class Syncronizer:
             return False
         return True
 
-    def walksource(self, source_path: pathlib.Path, target_path: pathlib.Path):
-        target_files = set()
-        target_directories = set()
-        for child in target_path.iterdir():
+    def list_files_and_directories(
+        self, path=pathlib.Path
+    ) -> tuple[set[str], set[str]]:
+        files = set()
+        directories = set()
+        for child in path.iterdir():
             mode = child.stat().st_mode
             if S_ISDIR(mode):
-                target_directories.add(child.name)
+                directories.add(child.name)
             elif S_ISREG(mode):
-                target_files.add(child.name)
+                files.add(child.name)
             else:
                 pass
 
-        source_files = set()
-        source_directories = set()
-        for child in source_path.iterdir():
-            mode = child.stat().st_mode
-            if S_ISDIR(mode):
-                source_directories.add(child.name)
-            elif S_ISREG(mode):
-                source_files.add(child.name)
-            else:
-                pass
+        return files, directories
+
+    def walksource(self, source_path: pathlib.Path, target_path: pathlib.Path):
+        target_files, target_directories = self.list_files_and_directories(target_path)
+
+        source_files, source_directories = self.list_files_and_directories(source_path)
 
         # remove not present in source
 
@@ -96,7 +91,7 @@ class Syncronizer:
             self.delete_handler(target_path / file, False)
 
         for directory in target_directories - source_directories:
-            self.delete_handler(target_path / file, True)
+            self.delete_handler(target_path / directory, True)
 
         for file in target_files & source_files:
             if not self.compare_file(source_path, target_path, file):
