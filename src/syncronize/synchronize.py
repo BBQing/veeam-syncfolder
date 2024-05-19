@@ -10,6 +10,12 @@ class Syncronizer:
 
     def __init__(self, configuration: Configuration):
         self.config = configuration
+        self.logger = None
+
+    def setup_logging(self):
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.addHandler(logging.StreamHandler())
+        self.logger.addHandler(logging.FileHandler(filename=config.logfile))
 
     @staticmethod
     def md5_of_file(path: pathlib.Path):

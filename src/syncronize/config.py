@@ -1,9 +1,10 @@
 from syncronize.cli import parser
+
+
 class Configuration:
 
     def __init__(self):
         self.args = parser.parse_args()
-        
 
     @property
     def heartbeat(self):
@@ -17,5 +18,9 @@ class Configuration:
     def target_dir(self):
         return self.args.target
 
-    
+    @proeprty
+    def logfile(self):
+        return self.args.logfile
+
+
 config = Configuration()
