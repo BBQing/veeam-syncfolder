@@ -1,3 +1,6 @@
 from syncronize.config import config
+from syncronize.synchronize import Syncronizer
 
-print(config.heartbeat)
+sync = Syncronizer(config)
+
+sync.syncronize()

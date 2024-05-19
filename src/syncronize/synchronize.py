@@ -1,5 +1,5 @@
 import pathlib
-from syncronize.config import config
+from syncronize.config import config, Configuration
 from stat import S_ISDIR, S_ISREG
 import logging
 import hashlib
@@ -8,7 +8,7 @@ import shutil
 
 class Syncronizer:
 
-    def __init__(self, configuration):
+    def __init__(self, configuration: Configuration):
         self.config = configuration
 
     @staticmethod
