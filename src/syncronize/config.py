@@ -18,7 +18,7 @@ class Configuration:
     def target_dir(self):
         return self.args.target
 
-    @proeprty
+    @property
     def logfile(self):
         return self.args.logfile
 

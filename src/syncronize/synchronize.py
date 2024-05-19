@@ -11,11 +11,13 @@ class Syncronizer:
     def __init__(self, configuration: Configuration):
         self.config = configuration
         self.logger = None
+        self.setup_logging()
 
     def setup_logging(self):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.addHandler(logging.StreamHandler())
         self.logger.addHandler(logging.FileHandler(filename=config.logfile))
+        self.logger.setLevel(logging.INFO)
 
     @staticmethod
     def md5_of_file(path: pathlib.Path):
@@ -30,14 +32,14 @@ class Syncronizer:
 
     def delete_handler(self, path: pathlib.Path, is_direcory: bool):
 
-        logging.info(f"DELETE {path}")
+        self.logger.info(f"DELETE {path}")
         if is_direcory:
             path.rmdir()
         else:
             path.unlink()
 
     def update_handler(self, path: pathlib.Path, target: pathlib.Path):
-        logging.info(f"UPDATE {path}")
+        self.logger.info(f"UPDATE {path}")
         shutil.copy2(path, target)
 
     def create_handler(
@@ -45,11 +47,11 @@ class Syncronizer:
     ):
 
         if not is_directory:
-            logging.info(f"CREATE {path}")
+            self.logger.info(f"CREATE {path}")
             shutil.copy2(path, target)
 
         else:
-            logging.info(f"CREATE {path}")
+            self.logger.info(f"CREATE {path}")
             shutil.copytree(path, target, copy_function=shutil.copy2)
 
     def compare_file(

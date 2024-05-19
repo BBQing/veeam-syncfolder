@@ -1,5 +1,5 @@
 run:
-	python -m syncronize --source ./source --target ./backup
+	python -m syncronize --source ./source --target ./backup --logfile logfile.log
 
 teardown:
 	@rm -rf ./source && rm -rf ./backup
