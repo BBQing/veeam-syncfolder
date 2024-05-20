@@ -24,3 +24,6 @@ black:
 	@black src
 
 check: pylint mypy isort black
+
+pytest:
+	@pytest tests

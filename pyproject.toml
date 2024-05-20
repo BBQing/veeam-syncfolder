@@ -16,4 +16,7 @@ black = "^24.4.2"
 pylint = "^3.2.1"
 mypy = "^1.10.0"
 isort = "^5.13.2"
+pytest = "^8.2.1"
 
+[tool.pytest.ini_options]
+addopts = "--capture=no"

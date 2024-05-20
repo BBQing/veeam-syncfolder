@@ -1,6 +1,7 @@
 "This module enable runnign this application as python module"
-from syncronize.synchronize import Syncronizer
+from syncronize import Syncronizer, Configuration, parser
 
-sync = Syncronizer()
+config = Configuration(parser.parse_args())
+sync = Syncronizer(config)
 
 sync.syncronize()

@@ -4,16 +4,16 @@ import pathlib
 import shutil
 from stat import S_ISDIR, S_ISREG
 
-from syncronize.config import config
+from syncronize.config import Configuration
 
 
 class Syncronizer:
 
-    def __init__(self):
-
+    def __init__(self, config: Configuration):
+        self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.addHandler(logging.StreamHandler())
-        self.logger.addHandler(logging.FileHandler(filename=config.logfile))
+        self.logger.addHandler(logging.FileHandler(filename=self.config.logfile))
         self.logger.setLevel(logging.INFO)
 
     @staticmethod
@@ -22,8 +22,8 @@ class Syncronizer:
             return hashlib.file_digest(file, hashlib.md5)
 
     def syncronize(self):
-        current_source = pathlib.Path(config.source_dir)
-        current_target = pathlib.Path(config.target_dir)
+        current_source = pathlib.Path(self.config.source_dir)
+        current_target = pathlib.Path(self.config.target_dir)
 
         self.walksource(current_source, current_target)
 
